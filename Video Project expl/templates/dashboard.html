@@ -1,0 +1,62 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <style>
+        /* Fade-in animation: Smoothly appears with a slight scaling effect */
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; /* Start fully transparent */
+                transform: scale(0.95); /* Slightly smaller at the beginning */
+            }
+            to { 
+                opacity: 1; /* Fully visible */
+                transform: scale(1); /* Normal size */
+            }
+        }
+
+        /* Class to apply the fade-in animation */
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards; /* Runs over 0.5s with smooth effect */
+        }
+
+        /* Slide-in animation: Moves up slightly while appearing */
+        @keyframes slideIn {
+            from { 
+                transform: translateY(-20px); /* Start 20px above */
+                opacity: 0; /* Fully transparent */
+            }
+            to { 
+                transform: translateY(0); /* Moves to its original position */
+                opacity: 1; /* Fully visible */
+            }
+        }
+
+        /* Class to apply the slide-in animation */
+        .slide-in {
+            animation: slideIn 0.5s ease-out forwards; /* Runs over 0.5s smoothly */
+        }
+    </style>
+
+    <!-- Importing Tailwind CSS for utility-based styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="flex flex-col items-center justify-center h-screen bg-gray-100 dark:bg-gray-900 dark:text-white">
+    <!-- Centered container for the dashboard -->
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg text-center w-full max-w-md">
+        <!-- Dashboard title -->
+        <h2 class="text-3xl font-bold mb-4">Welcome to Dashboard</h2>
+        
+        <!-- Description text -->
+        <p class="text-gray-600 dark:text-gray-300 mb-4">You are now logged in.</p>
+        
+        <!-- Button to navigate to the recorder page -->
+        <a href="/recorder" 
+           class="bg-blue-600 text-white px-5 py-2 rounded-lg shadow-md transition-all duration-300 
+                  hover:bg-blue-700 active:scale-95">
+            Start Recording
+        </a>
+    </div>
+</body>

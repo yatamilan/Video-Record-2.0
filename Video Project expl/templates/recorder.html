@@ -1,0 +1,133 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screen Recorder</title>
+
+    <!-- Importing Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* Fade-in animation: Smooth appearance with slight scaling effect */
+        @keyframes fadeIn {
+            from {
+                opacity: 0; /* Initially hidden */
+                transform: scale(0.95); /* Slightly smaller */
+            }
+            to {
+                opacity: 1; /* Fully visible */
+                transform: scale(1); /* Normal size */
+            }
+        }
+
+        /* Class to apply fade-in animation */
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        /* Slide-in animation: Moves up slightly while appearing */
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px); /* Starts slightly above */
+                opacity: 0; /* Initially invisible */
+            }
+            to {
+                transform: translateY(0); /* Moves to original position */
+                opacity: 1; /* Fully visible */
+            }
+        }
+
+        /* Class to apply slide-in animation */
+        .slide-in {
+            animation: slideIn 0.5s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body class="flex flex-col items-center justify-center min-h-screen bg-gray-100 fade-in">
+
+    <!-- Main Recorder Container -->
+    <div class="bg-white p-6 rounded-lg shadow-lg text-center w-96 slide-in">
+        <h2 class="text-2xl font-bold mb-4">Screen Recorder</h2>
+
+        <!-- Video Preview -->
+        <video id="preview" class="w-full rounded-lg shadow-md" autoplay muted></video>
+
+        <!-- Recording Indicator -->
+        <div id="recordingIndicator" class="hidden flex items-center justify-center mt-3 space-x-2">
+            <div class="w-3 h-3 bg-red-600 rounded-full animate-pulse"></div>
+            <span class="text-red-600 font-semibold">Recording...</span>
+        </div>
+
+        <!-- Control Buttons -->
+        <div class="mt-4 flex justify-between">
+            <button id="startBtn" class="bg-blue-600 text-white px-5 py-2 rounded-lg shadow-md transition-all duration-300 hover:bg-blue-700 active:scale-95">
+                Start Recording
+            </button>
+            <button id="stopBtn" class="hidden bg-red-600 text-white px-5 py-2 rounded-lg shadow-md transition-all duration-300 hover:bg-red-700 active:scale-95">
+                Stop Recording
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let mediaRecorder;
+        let recordedChunks = [];
+
+        document.getElementById("startBtn").addEventListener("click", async () => {
+            // Request screen recording permission
+            const stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: false });
+            document.getElementById("preview").srcObject = stream; // Display screen recording preview
+            mediaRecorder = new MediaRecorder(stream);
+
+            // Store recorded video data
+            mediaRecorder.ondataavailable = (event) => {
+                if (event.data.size > 0) {
+                    recordedChunks.push(event.data);
+                }
+            };
+
+            // When recording stops, send data to the server
+            mediaRecorder.onstop = async () => {
+                const blob = new Blob(recordedChunks, { type: "video/webm" });
+                const formData = new FormData();
+                formData.append("video", blob, "recorded.webm");
+
+                // Upload the video to the server
+                const response = await fetch("/upload", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const result = await response.json();
+                alert(result.message + " Press Enter to download.");
+
+                // Auto-download the recorded video
+                const downloadLink = document.createElement("a");
+                downloadLink.href = `/download/${result.filename}`;
+                downloadLink.download = result.filename;
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+            };
+
+            // Start recording
+            mediaRecorder.start();
+            document.getElementById("recordingIndicator").classList.remove("hidden");
+
+            // Toggle button visibility
+            document.getElementById("startBtn").classList.add("hidden");
+            document.getElementById("stopBtn").classList.remove("hidden");
+        });
+
+        document.getElementById("stopBtn").addEventListener("click", () => {
+            // Stop recording
+            mediaRecorder.stop();
+            document.getElementById("recordingIndicator").classList.add("hidden");
+
+            // Toggle button visibility
+            document.getElementById("startBtn").classList.remove("hidden");
+            document.getElementById("stopBtn").classList.add("hidden");
+        });
+    </script>
+
+</body>

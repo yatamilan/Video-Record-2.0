@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* ===== Moving Background Gradient Animation ===== */
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* ===== Apply the Animated Gradient to Body ===== */
+        body {
+            background: linear-gradient(-45deg, #f0d313, #e62c79, #0245ff, #ff0505, #000000, #6f00be);
+            background-size: 400% 400%; /* Enlarged size to enable smooth movement */
+            animation: gradientMove 8s ease infinite; /* 8-second looping animation */
+            height: 100vh; /* Full screen height */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* ===== Glassmorphism Effect (Transparent Blur Box) ===== */
+        .glass-box {
+            background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+            backdrop-filter: blur(12px); /* Blur effect */
+            -webkit-backdrop-filter: blur(12px); /* Safari support */
+            padding: 20px 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        /* ===== Spinning Loader Animation ===== */
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.5);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        /* ===== Keyframes for Rotation Animation ===== */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ===== Text Styling for Visibility ===== */
+        .loading-text {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Glass Box containing Loader and Text -->
+    <div class="glass-box">
+        <!-- Spinning Loader Animation -->
+        <div class="loader"></div>
+
+        <!-- Updated Loading Text -->
+        <p class="loading-text">Loading Your Video Dashboard...</p>
+    </div>
+
+    <!-- ===== JavaScript for Redirecting to website.html after 3 seconds ===== -->
+    <script>
+        setTimeout(() => {
+            window.location.href = "/website"; // Redirect to website.html
+        }, 3000); // Delay of 3 seconds (3000ms)
+    </script>
+
+</body>
+</html>
