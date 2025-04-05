@@ -1,9 +1,0 @@
-CREATE TABLE videos (
-                     filename VARCHAR(255) PRIMARY KEY,
-                     upload_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                 );
-
-CREATE TABLE user (
-                    username VARCHAR(50) PRIMARY KEY,
-                    password VARCHAR(255) NOT NULL
-    );
