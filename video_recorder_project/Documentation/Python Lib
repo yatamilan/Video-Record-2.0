@@ -1,0 +1,6 @@
+Flask 
+Werkzeug 
+Jinja2 
+Flask-CORS 
+opencv-python 
+moviepy
