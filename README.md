@@ -70,12 +70,13 @@ The **Video Recorder Project** is a web-based application that allows users to r
 If Flask is not installed, install it using:  
 ```bash
 pip install flask
+```
 
 ### Step 2: Run the Server
 Navigate to the project folder and execute:
 ```bash
 python server.py
-
+```
 ### Step 3: Open in Browser
 Go to: http://127.0.0.1:5000/
 
